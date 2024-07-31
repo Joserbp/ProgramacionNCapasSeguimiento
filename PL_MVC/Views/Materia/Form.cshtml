@@ -1,0 +1,138 @@
+﻿@model ML.Materia
+@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Scripts.Render("~/bundles/jquery")
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+
+<h2>Form</h2>
+
+@using (Html.BeginForm("Form", "Materia", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(model => model.IdMateria)
+    @Html.HiddenFor(model => model.Imagen)
+
+    @*<input type="text" id="datepicker" />*@
+
+    @Html.LabelFor(model => model.Turno)
+
+    switch (Model.Turno)
+    {
+        case "MT":
+            @Html.RadioButtonFor(model => model.Turno, "MT", new { @checked = true }) <label for="Turno_MT">MT</label>
+            @Html.RadioButtonFor(model => model.Turno, "VP") <label for="Turno_VP">VP</label>
+            break;
+
+        case "VP":
+            @Html.RadioButtonFor(model => model.Turno, "MT") <label for="Turno_MT">MT</label>
+            @Html.RadioButtonFor(model => model.Turno, "VP", new { @checked = true }) <label for="Turno_VP">VP</label>
+
+            break;
+
+        default:
+            @Html.RadioButtonFor(model => model.Turno, "MT") <label for="Turno_MT">MT</label>
+            @Html.RadioButtonFor(model => model.Turno, "VP") <label for="Turno_VP">VP</label>
+
+            break;
+
+    }
+
+
+    @Html.LabelFor(model => model.Nombre)
+    @Html.TextBoxFor(model => model.Nombre, new { @onkeyup = "soloLetras(this), otrafuncion()" })
+    <label id="lblErrorNombreUsuario"></label>
+    @Html.ValidationMessageFor(model => model.Nombre) //Mostrar los errores de las validaciones del servidor
+
+    <label class="text-bg-danger">@Html.ValidationMessageFor(model => model.Nombre)</label>
+
+    @Html.LabelFor(model => model.Creditos)
+    @Html.TextBoxFor(model => model.Creditos, new { @class = "soloNumeros" })
+
+
+    @Html.LabelFor(model => model.Costo)
+    @Html.TextBoxFor(model => model.Costo)
+
+    @Html.LabelFor(model => model.Fecha)
+    @Html.TextBoxFor(model => model.Fecha, new { @id = "datepicker" })
+
+    @Html.DropDownListFor(model => model.Semestre.IdSemestre, new SelectList(Model.Semestre.Semestres, "IdSemestre", "Nombre"), "Selecciona un semestre")
+
+    <input type="file" id="imagen" name="imagen" onchange="validarImagen(), visualizarImagen(this)" />
+
+    if (Model.Imagen == null || Model.Imagen == "")
+    {
+        <img src="https://cdn-icons-png.flaticon.com/512/9187/9187604.png" width="200px" id="img" />
+    }
+    else
+    {
+        <img src="data:image/*;base64,@Model.Imagen" width="200px" id="img" />
+
+    }
+    @*<img id="img" />*@
+
+
+    <button type="submit"> Enviar</button>
+
+}
+
+
+
+@*@Scripts.Render("~/bundles/jquery")*@
+
+<script type="text/javascript">
+
+    jQuery.noConflict();
+
+    jQuery(function ($) {
+        $("#datepicker").datepicker({
+            dateFormat: "dd MM, yy"
+        });
+    });
+
+
+    function validarImagen() {
+        var allowedExtension = ['jpeg', 'jpg', 'png'];
+        var fileExtension = document.getElementById('imagen').value.split('.').pop().toLowerCase();
+        var isValidFile = false;
+        for (var index in allowedExtension) {
+            if (fileExtension == allowedExtension[index]) {
+                isValidFile = true;
+                break;
+            }
+        }
+        if (!isValidFile) {
+            alert('Las extensiones permitidas son : .' + allowedExtension.join(', .'));
+            document.getElementById('imagen').value = "";
+        }
+        return isValidFile;
+    }
+
+    function visualizarImagen(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#img').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function soloLetras(event) {
+        var regex = /^[a-zA-Z\sáéíóúÁÉÍÓÚñÑ]*$/;
+        var lblText = 'lblErrorNombreUsuario';
+        var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+        if (!regex.test(key)) {
+            event.preventDefault();
+            $('#' + lblText).text("Solo se aceptan letras");
+            $('#' + lblText).css({ "color": "red" });
+            return false;
+        } else {
+            $('#' + lblText).text("");
+        }
+
+    }
+
+</script>

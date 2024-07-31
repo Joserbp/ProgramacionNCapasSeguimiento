@@ -1,0 +1,115 @@
+﻿@model ML.Materia
+
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("GetAll", "Materia", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+<div class="form-group">
+    @Html.LabelFor(model => model.Nombre, new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control" })
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <button type="submit" class="btn btn-primary">Enviar</button>
+    </div>
+</div>
+}
+
+@if (Model.Materias.Count == 0)
+{
+    <p>No hay registros</p>
+}
+else
+{
+
+    @*using (Html.BeginForm("CargaMasiva", "Materia", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div class="input-group">
+                <span class="input-group-text" id="basic-addon1"><i class="bi bi-file-earmark-text-fill" style="color: lightseagreen"></i></span>
+                <input type='file' class="form-control" name="Excel" />
+            </div>
+
+            <button type="submit">Enviar</button>
+        }*@
+
+
+    <table class="table table-bordered text-center">
+        <thead>
+            <tr>
+                <th>Acciones</th>
+                <th>Imagen</th>
+                <th>Nombre</th>
+                <th>Créditos</th>
+                <th>Fecha</th>
+                <th>Turno</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (ML.Materia materia in Model.Materias)
+            {
+                <tr>
+                    <td>
+                        <a href="@Url.Action("Form","Materia", new { idMateria = materia.IdMateria })">Editar</a>
+                    </td>
+                    <td>
+                        @if (materia.Imagen == null || materia.Imagen == "")
+                        {
+                            <img src="https://cdn-icons-png.flaticon.com/512/9187/9187604.png" width="100px" />
+                        }
+                        else
+                        {
+                            <img src="data:image/*;base64,@materia.Imagen" width="100px" />
+                        }
+                    </td>
+                    <td>@materia.Nombre</td>
+                    <td>@materia.Creditos</td>
+                    <td>@materia.Fecha</td>
+                    <td>@materia.Turno</td>
+                    @if (materia.Status)
+                    {
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked onchange="ChangeStatus(this, @materia.IdMateria)">
+                            </div>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onchange="ChangeStatus(this,  @materia.IdMateria)">
+                            </div>
+                        </td>
+                    }
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+
+<script>
+    function ChangeStatus(i, idMateria) {
+        var newStatus = i.checked;
+        $.ajax({
+            url: @Url.Action("ChangeStatus"),
+            dataType: 'JSON',
+            type: 'POST',
+            data: //Mandar Status y IdMateria
+            success: funtion(){
+            ///
+            },
+            error: funtion(){
+                alert('Ocurrio actualizar');
+            }
+        })
+    }
+</script>

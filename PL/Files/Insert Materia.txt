@@ -1,0 +1,6 @@
+Nombre|Creditos|Costo|IdSemestre
+Biología|4|40|2
+Redes|9|90|1
+Seguridad Informática|8|20|2
+Mercadotecnia|12|88|1
+Algoritmos|8|77|1

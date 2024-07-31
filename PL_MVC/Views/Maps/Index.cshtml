@@ -1,0 +1,98 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    #map {
+        height: 400px; /* The height is 400 pixels */
+        width: 100%; /* The width is the width of the web page */
+    }
+</style>
+
+<h2>Index</h2>
+
+<div id="map"></div>
+
+<script>
+    (g => { var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window; b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams, u = () => h || (h = new Promise(async (f, n) => { await (a = m.createElement("script")); e.set("libraries", [...r] + ""); for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]); e.set("callback", c + ".maps." + q); a.src = `https://maps.${c}apis.com/maps/api/js?` + e; d[q] = f; a.onerror = () => h = n(Error(p + " could not load.")); a.nonce = m.querySelector("script[nonce]")?.nonce || ""; m.head.append(a) })); d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)) })({
+        key: "AIzaSyCSKBDdPPlfca_zTwyxKiicRQn1qfgRjLw",
+        // Add other bootstrap parameters as needed, using camel case.
+        // Use the 'v' parameter to indicate the version to load (alpha, beta, weekly, etc.)
+    });
+
+    // Initialize and add the map
+    var map, marker;
+    var latitud = 19.430570307662446, longitud = -99.16166352568936;
+    var positiion;
+
+    async function initMap() {
+        // The location of Uluru
+
+        const position = { lat: latitud, lng: longitud };
+        // Request needed libraries.
+        const { Map } = await google.maps.importLibrary("maps");
+        //const { AdvancedMarkerView } = await google.maps.importLibrary("marker");
+
+        // The map, centered at Uluru
+        map = new Map(document.getElementById("map"), {
+            zoom: 18,
+            center: position,
+            mapId: "DEMO_MAP_ID",
+        });
+
+        //if (latitud == 19.430570307662446) {
+        //    let infoWindow = new google.maps.InfoWindow({
+        //        content: "Presiona la locación",
+        //        position: position,
+        //    });
+
+        //    infoWindow.open(map);
+        //}
+
+        // var myLatlng = new google.maps.LatLng(parseFloat(latitud), parseFloat(longitud));
+
+        //marker = new google.maps.Marker({
+        //    position: new google.maps.LatLng(latitud, longitud),
+        //    map: map
+        //});
+
+
+
+        //obtener direccion
+        google.maps.event.addListener(map, 'click', function (event) {
+            var geocoder = new google.maps.Geocoder();
+            geocoder.geocode({
+                'latLng': event.latLng
+            }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    if (results[0]) {
+                        //$("#txtDireccion").val(results[0].formatted_address);
+                        //latitud = event.latLng.lat(); // Obtener latitud
+                        //longitud = event.latLng.lng(); // Obtener longitud
+
+                        if (marker) {
+                            marker.setMap(null); // Eliminar marcador anterior si existe
+                        }
+                        marker = new google.maps.Marker({
+                            position: event.latLng,
+                            map: map
+                        });
+                        // Actualiza los campos ocultos con las coordenadas
+                        //$("#latitud").val(latitud);
+                        //$("#longitud").val(longitud);
+                    }
+                }
+            }
+            );
+        });
+
+    }
+    console.log(latitud)
+    console.log(longitud)
+
+    initMap();
+
+
+</script>
