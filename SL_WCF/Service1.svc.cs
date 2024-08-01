@@ -12,22 +12,14 @@ namespace SL_WCF
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
     public class Service1 : IService1
     {
-        public string GetData(int value)
+        public string Saludar(string nombre)
         {
-            return string.Format("You entered: {0}", value);
+            return "Hola " + nombre;
         }
 
-        public CompositeType GetDataUsingDataContract(CompositeType composite)
+        public int Sumar(int numero1, int numero2)
         {
-            if (composite == null)
-            {
-                throw new ArgumentNullException("composite");
-            }
-            if (composite.BoolValue)
-            {
-                composite.StringValue += "Suffix";
-            }
-            return composite;
+            return numero1 + numero2;
         }
     }
 }

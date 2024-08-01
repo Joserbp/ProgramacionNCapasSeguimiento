@@ -16,16 +16,6 @@ namespace PL_MVC.Controllers
         public ActionResult Index()
         {
 
-            ServiceReferenceServicio1.Service1Client service = new ServiceReferenceServicio1.Service1Client();
-            string valor = service.GetData(1);
-
-
-
-
-
-
-
-
             try
             {
                 string pathCorreoTemplate = Server.MapPath("~/Content/CorreoTemplate/Correo.html");
