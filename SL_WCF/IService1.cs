@@ -8,15 +8,18 @@ using System.Text;
 
 namespace SL_WCF
 {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IService1" in both code and config file together.
-    [ServiceContract]
+    [ServiceContract] // Contrato de servicios a exponer
     public interface IService1
     {
         //Firma de metodos
-        [OperationContract]
+        //Tipo dato retorno + Nombre + Parametros (Opcionales)
+
+        [OperationContract] //Metodo a exponer de nuestro servicio
         string Saludar(string nombre);
 
         [OperationContract]
         int Sumar(int numero1, int numero2);
+        [OperationContract]
+        int Restar(int numero1, int numero2);
     }
 }
