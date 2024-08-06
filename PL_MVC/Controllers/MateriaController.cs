@@ -22,8 +22,9 @@ namespace PL_MVC.Controllers
         public ActionResult GetAll()
         {
             ML.Materia materia = new ML.Materia();
-            ML.Result result = BL.Materia.GetAllSPEF(materia);
-
+            // ML.Result result = BL.Materia.GetAllSPEF(materia); Se remplaza por el consumo del servicio
+            ServiceMateria.MateriaServiceClient client = new ServiceMateria.MateriaServiceClient();
+            ML.Result result = client.GetAll(materia);
             //DateTime fecha = DateTime.Now();
 
             materia.Materias = result.Objects;
@@ -97,8 +98,9 @@ namespace PL_MVC.Controllers
                 if (materia.IdMateria == 0)
                 {
                     //ADD
-                    BL.Materia.AddSP(materia);
-
+                    //BL.Materia.AddSP(materia);
+                    ServiceMateria.MateriaServiceClient client = new ServiceMateria.MateriaServiceClient();
+                    client.Add(materia);
                 }
                 else
                 {

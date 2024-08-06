@@ -14,5 +14,9 @@ namespace SL_WCF
         [OperationContract]
         //tipo de retorno + nombre + parametros
         ML.Result Add(ML.Materia materia);
+
+        [OperationContract]
+        [ServiceKnownType(typeof(ML.Materia))]
+        ML.Result GetAll(ML.Materia materia);
     }
 }

@@ -12,9 +12,15 @@ namespace SL_WCF
     // NOTE: In order to launch WCF Test Client for testing this service, please select MateriaService.svc or MateriaService.svc.cs at the Solution Explorer and start debugging.
     public class MateriaService : IMateriaService
     {
-        public Result Add(Materia materia)
+        public Result Add(ML.Materia materia)
         {
             ML.Result result = BL.Materia.AddEFLINQ(materia); 
+            return result;
+        }
+
+        public Result GetAll(ML.Materia materia)
+        {
+            ML.Result result = BL.Materia.GetAllSPEF(materia);
             return result;
         }
     }
